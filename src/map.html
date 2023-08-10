@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Directions</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1VkLC5XeTJG-gjQ-VChy4KvQTA5le5Jg&libraries=places"></script>
+
+     <script>
+        var map;
+        var directionsService;
+        var directionsRenderer;
+
+        function initMap() {
+            var startInput = document.getElementById('start-input');
+            var endInput = document.getElementById('end-input');
+
+            var autocompleteStart = new google.maps.places.Autocomplete(startInput);
+            var autocompleteEnd = new google.maps.places.Autocomplete(endInput);
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 34.1014, lng: -118.3310 },
+                zoom: 15
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                suppressMarkers: true
+            });
+
+            autocompleteStart.addListener('place_changed', function () {
+                calculateAndDisplayRoute();
+            });
+
+            autocompleteEnd.addListener('place_changed', function () {
+                calculateAndDisplayRoute();
+            });
+        }
+
+        function calculateAndDisplayRoute() {
+            var start = document.getElementById('start-input').value;
+            var end = document.getElementById('end-input').value;
+
+            directionsService.route(
+                {
+                    origin: start,
+                    destination: end,
+                    travelMode: 'WALKING'
+                },
+                function (response, status) {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                }
+            );
+        }
+    </script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="start-input" placeholder="Enter your starting address">
+    <input type="text" id="end-input" placeholder="Enter your destination address">
+    <div id="map"></div>
+    <script>
+        // Initialize Google Maps and Directions
+        initMap();
+    </script>
+</body>
+</html>

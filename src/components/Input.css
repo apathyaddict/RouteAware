@@ -1,0 +1,9 @@
+.autocomplete-input {
+  position: relative;
+  z-index: 1;
+}
+.map-container {
+  height: 500px; /* Adjust the height as needed */
+  position: relative;
+  overflow: hidden;
+}
